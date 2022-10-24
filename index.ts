@@ -1,12 +1,17 @@
 import bodyParser from "body-parser";
 import express from "express";
 const app = express();
+
+app.use((req,res,next)=>{
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  next();
+})
 type products = {
     id: number;
     name: string;
     brand: string;
 }
-app.use(bodyParser.json());
+
 const product :Array<products>= [{id:1234,name:"Juan",brand:"ADIDAS"}];
 
 app.get("/product",(req,res)=>{
