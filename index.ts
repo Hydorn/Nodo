@@ -2,6 +2,7 @@ import bodyParser from "body-parser";
 import express from "express";
 const app = express();
 
+app.use(express.json());
 app.use((req,res,next)=>{
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   next();
