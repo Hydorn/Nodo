@@ -28,18 +28,23 @@ app.post("/product", (req, res) => {
       return res.status(400).json({ message: err.message });
     }
 });
-/*
+
 app.put("/product", (req, res) => {
     const { name, brand, id , price} = req.body;    
     const index = product.findIndex((product) => product.id === id);
-    if (!index) product[index] = {name, brand, id};
+    if (!index) product[index] = {name, brand, id, price};
     res.status(200).json(product[index]);
   });
 
 app.delete("/product",(req,res)=>{
-    const { name, brand, id } = req.body;    
-    const index = product.findIndex((product) => product.id === id);
-    res.status(200).json(product[index]);
+    let deleted:number;
+    const {id} = req.body;
+    const index = product.findIndex((product) => Number(product.id) === Number(id));
+    if(index!=-1){
+      deleted = Number(product.splice(index,1));
+    }
+    res.status(200).json(deleted);
+
 })
-*/
+
 app.listen(3000);
