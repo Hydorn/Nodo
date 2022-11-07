@@ -29,11 +29,14 @@ app.get("/product/:page?",(req,res)=>{
   let filtered = product;
   //Search and filter
   let query = String(req.query.search).toLocaleLowerCase();
-
-  filtered = filtered?.filter(item=>{
-    return (item.name.toLocaleLowerCase().includes(query)||
-        item.brand.toLocaleLowerCase().includes(query));
-  })
+  
+  if(!query){
+    filtered = filtered?.filter(item=>{
+      return (item.name.toLocaleLowerCase().includes(query)||
+          item.brand.toLocaleLowerCase().includes(query));
+    })
+  }
+  
 
   //Pagination
   let paginatedProducts: Array<products[]> = [];
