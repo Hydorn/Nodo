@@ -27,13 +27,15 @@ const product :Array<products>= [ {id:1234,name:"Juan",brand:"ADIDAS", price:666
 
 app.get("/product/:page?",(req,res)=>{
   let filtered = product;
-  //Search and filter
-  let query = String(req.query.search).toLocaleLowerCase();
+    //Search and filter
+  let query = req.query.search;
   
-  if(!query){
+  
+  if(query){
+    let strQuery = String(query).toLocaleLowerCase();
     filtered = filtered?.filter(item=>{
-      return (item.name.toLocaleLowerCase().includes(query)||
-          item.brand.toLocaleLowerCase().includes(query));
+      return (item.name.toLocaleLowerCase().includes(strQuery)||
+          item.brand.toLocaleLowerCase().includes(strQuery));
     })
   }
   
@@ -41,16 +43,28 @@ app.get("/product/:page?",(req,res)=>{
   //Pagination
   let paginatedProducts: Array<products[]> = [];
 
-  for(let i=0; i<product.length; i=i+5){
+  for(let i=0; i<filtered.length; i=i+5){
     paginatedProducts.push(filtered.slice(i,i+5));
   }
-
+  console.log(paginatedProducts);
   //Page 
   let page = Number(req.params.page);
 
-  //Response if page not specified
-  if(!page) res.json(paginatedProducts[0]);
-  else res.json(paginatedProducts[page])
+  //Response
+  let body;
+  if(!page) {
+     body = {
+      response: paginatedProducts[0],
+      length: paginatedProducts.length
+     }
+    res.json(body);
+  } else {
+    body = {
+      response: paginatedProducts[page],
+      length: paginatedProducts.length
+     }
+     res.json(body);
+  }
 
 });
 
